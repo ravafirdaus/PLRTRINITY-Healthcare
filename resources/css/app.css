@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .landing-hero {
+        background:
+            radial-gradient(ellipse at 86% 18%, rgba(8, 126, 139, 0.13), transparent 32%),
+            radial-gradient(ellipse at 12% 86%, rgba(63, 190, 165, 0.10), transparent 28%),
+            linear-gradient(135deg, #f8fcfd 0%, #eef8f7 52%, #f8fbfd 100%);
+    }
+
+    .landing-hero::before,
+    .landing-hero::after {
+        position: absolute;
+        content: '';
+        border: 1px solid rgba(8, 126, 139, 0.10);
+        border-radius: 9999px;
+        pointer-events: none;
+    }
+
+    .landing-hero::before {
+        width: 28rem;
+        height: 28rem;
+        top: -15rem;
+        right: -7rem;
+        box-shadow: 0 0 0 2rem rgba(8, 126, 139, 0.025), 0 0 0 4rem rgba(8, 126, 139, 0.02);
+    }
+
+    .landing-hero::after {
+        width: 18rem;
+        height: 18rem;
+        bottom: -12rem;
+        left: 35%;
+        box-shadow: 0 0 0 1.5rem rgba(8, 126, 139, 0.025);
+    }
+
+    .queue-preview-card {
+        animation: preview-arrive 700ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+        transition: transform 250ms ease, box-shadow 250ms ease;
+    }
+
+    .queue-preview-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 24px 55px -28px rgba(23, 43, 58, 0.32);
+    }
+
+    @keyframes preview-arrive {
+        from { opacity: 0; transform: translateY(16px) scale(0.985); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes float-3d {
+        0%, 100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-8px) rotate(0.8deg);
+        }
+    }
+
+    .animate-float-3d {
+        animation: float-3d 4.5s ease-in-out infinite;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .queue-preview-card { animation: none; transition: none; }
+        .queue-preview-card:hover { transform: none; }
+        .animate-float-3d { animation: none; }
+    }
+}
