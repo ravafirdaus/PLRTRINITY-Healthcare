@@ -196,7 +196,7 @@
         <div class="no-print mt-3 flex flex-wrap items-center justify-between gap-1 text-xs">
             <!-- Salin Kunci Unik -->
             <button type="button" @click="copyKey()"
-                    class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-hospital border border-line bg-white hover:bg-slate-50 text-slate-700 font-semibold text-[11px] shadow-xs transition">
+                    class="btn-tap inline-flex items-center gap-1 px-2.5 py-1.5 rounded-hospital border border-line bg-white hover:bg-slate-50 active:scale-95 text-slate-700 font-semibold text-[11px] shadow-xs transition">
                 <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                 <span x-text="copied ? 'Tersalin!' : 'Salin Kunci'">Salin Kunci</span>
             </button>
@@ -204,7 +204,7 @@
             <div class="flex items-center gap-1.5">
                 <!-- Download PDF Button -->
                 <button type="button" @click="downloadCardPdf()" :disabled="downloadingPdf"
-                        class="inline-flex items-center gap-1 px-3 py-1.5 rounded-hospital bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white font-semibold text-[11px] shadow-xs transition cursor-pointer"
+                        class="btn-tap inline-flex items-center gap-1 px-3 py-1.5 rounded-hospital bg-emerald-600 hover:bg-emerald-700 active:scale-95 disabled:opacity-60 text-white font-semibold text-[11px] shadow-xs transition cursor-pointer"
                         title="Download kartu langsung dalam format PDF 1 halaman berukuran standar">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                     <span x-text="downloadingPdf ? 'Membuat PDF...' : 'Download PDF'">Download PDF</span>
@@ -212,7 +212,7 @@
 
                 <!-- Cetak Kartu -->
                 <a href="{{ route('patient.card.print') }}" target="_blank"
-                   class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-hospital bg-primary hover:bg-primary-hover text-white font-semibold text-[11px] shadow-xs transition"
+                   class="btn-tap inline-flex items-center gap-1 px-2.5 py-1.5 rounded-hospital bg-primary hover:bg-primary-hover active:scale-95 text-white font-semibold text-[11px] shadow-xs transition"
                    title="Buka halaman cetak khusus kartu tanpa menu dasbor">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
                     <span>Cetak</span>

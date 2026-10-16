@@ -63,9 +63,43 @@
         animation: float-3d 4.5s ease-in-out infinite;
     }
 
+    /* Tactile Click & Tap Animations */
+    .btn-tap {
+        transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease, filter 0.15s ease, background-color 0.15s ease;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+    }
+
+    .btn-tap:active {
+        transform: scale(0.94) translateY(1.5px) !important;
+        filter: brightness(0.95);
+    }
+
+    /* Interactive Sidebar Navigation Links for Touch & Click */
+    .sidebar-link {
+        transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+    }
+
+    .sidebar-link:active {
+        transform: scale(0.95) translateX(3px) !important;
+    }
+
+    .sidebar-icon {
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .sidebar-link:active .sidebar-icon {
+        transform: scale(1.18) rotate(-6deg);
+    }
+
     @media (prefers-reduced-motion: reduce) {
         .queue-preview-card { animation: none; transition: none; }
         .queue-preview-card:hover { transform: none; }
         .animate-float-3d { animation: none; }
+        .btn-tap:active { transform: none !important; }
+        .sidebar-link:active { transform: none !important; }
     }
 }
+

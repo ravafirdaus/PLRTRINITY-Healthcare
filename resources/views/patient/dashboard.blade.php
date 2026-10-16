@@ -44,12 +44,12 @@
                         <span class="text-xs">{{ $todayFormatted ?? \Carbon\Carbon::today()->translatedFormat('l, d F Y') }}</span>
                     </div>
 
-                    <a href="{{ route('patient.reservasi.create') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white rounded-xl text-xs font-bold shadow-md shadow-teal-600/20 hover:shadow-lg hover:shadow-teal-600/30 transition-all transform hover:-translate-y-0.5 active:scale-95">
+                    <a href="{{ route('patient.reservasi.create') }}" class="btn-tap inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white rounded-xl text-xs font-bold shadow-md shadow-teal-600/20 hover:shadow-lg hover:shadow-teal-600/30 transition-all active:scale-95">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
                         <span>Ambil Antrean</span>
                     </a>
 
-                    <a href="{{ route('patient.telekonsultasi.index') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white hover:bg-slate-50 text-teal-800 border border-teal-200/90 rounded-xl text-xs font-bold shadow-2xs hover:shadow-xs transition-all transform hover:-translate-y-0.5 active:scale-95">
+                    <a href="{{ route('patient.telekonsultasi.index') }}" class="btn-tap inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white hover:bg-slate-50 text-teal-800 border border-teal-200/90 rounded-xl text-xs font-bold shadow-2xs hover:shadow-xs transition-all active:scale-95">
                         <svg class="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                         <span>Telekonsultasi Video</span>
                     </a>
@@ -88,7 +88,7 @@
 
             <div class="flex items-center gap-3">
                 <a href="{{ route('public.queue') }}" target="_blank"
-                   class="px-4 py-2 bg-primary hover:bg-primary-hover text-white rounded-hospital text-xs font-semibold transition shadow-xs">
+                   class="btn-tap px-4 py-2 bg-primary hover:bg-primary-hover active:scale-95 text-white rounded-hospital text-xs font-semibold transition shadow-xs">
                     Pantau di Layar Antrean &rarr;
                 </a>
             </div>
@@ -114,8 +114,8 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- 1. Buat Reservasi -->
         <a href="{{ route('patient.reservasi.create') }}"
-           class="bg-white p-5 rounded-hospital border border-line shadow-xs hover:border-primary/40 hover:shadow-sm transition-all group">
-            <div class="w-10 h-10 rounded-hospital bg-primary-50 text-primary flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+           class="btn-tap bg-white p-5 rounded-hospital border border-line shadow-xs hover:border-primary/40 hover:shadow-sm active:scale-95 transition-all group">
+            <div class="w-10 h-10 rounded-hospital bg-primary-50 text-primary flex items-center justify-center mb-3 group-hover:scale-105 group-active:scale-90 transition-transform">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
@@ -126,8 +126,8 @@
 
         <!-- 2. Cek Status Antrean -->
         <a href="{{ route('public.queue') }}" target="_blank"
-           class="bg-white p-5 rounded-hospital border border-line shadow-xs hover:border-primary/40 hover:shadow-sm transition-all group">
-            <div class="w-10 h-10 rounded-hospital bg-sky-50 text-primary flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+           class="btn-tap bg-white p-5 rounded-hospital border border-line shadow-xs hover:border-primary/40 hover:shadow-sm active:scale-95 transition-all group">
+            <div class="w-10 h-10 rounded-hospital bg-sky-50 text-primary flex items-center justify-center mb-3 group-hover:scale-105 group-active:scale-90 transition-transform">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
@@ -138,8 +138,8 @@
 
         <!-- 3. Riwayat Kunjungan -->
         <a href="{{ route('patient.reservasi.history') }}"
-           class="bg-white p-5 rounded-hospital border border-line shadow-xs hover:border-primary/40 hover:shadow-sm transition-all group">
-            <div class="w-10 h-10 rounded-hospital bg-emerald-50 text-accent flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+           class="btn-tap bg-white p-5 rounded-hospital border border-line shadow-xs hover:border-primary/40 hover:shadow-sm active:scale-95 transition-all group">
+            <div class="w-10 h-10 rounded-hospital bg-emerald-50 text-accent flex items-center justify-center mb-3 group-hover:scale-105 group-active:scale-90 transition-transform">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                 </svg>
@@ -150,8 +150,8 @@
 
         <!-- 4. Profil Saya -->
         <a href="{{ route('patient.profile') }}"
-           class="bg-white p-5 rounded-hospital border border-line shadow-xs hover:border-primary/40 hover:shadow-sm transition-all group">
-            <div class="w-10 h-10 rounded-hospital bg-indigo-50 text-indigo-600 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+           class="btn-tap bg-white p-5 rounded-hospital border border-line shadow-xs hover:border-primary/40 hover:shadow-sm active:scale-95 transition-all group">
+            <div class="w-10 h-10 rounded-hospital bg-indigo-50 text-indigo-600 flex items-center justify-center mb-3 group-hover:scale-105 group-active:scale-90 transition-transform">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                 </svg>
