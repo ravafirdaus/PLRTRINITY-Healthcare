@@ -203,6 +203,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/services', [AdminController::class, 'storeService'])->name('services.store');
         Route::put('/services/{serviceId}', [AdminController::class, 'updateService'])->name('services.update');
         Route::post('/users', [AdminController::class, 'storeUser'])->name('users.store');
+
+        // Manajemen Jadwal Praktik Dokter
+        Route::post('/schedules', [AdminController::class, 'storeSchedule'])->name('schedules.store');
+        Route::put('/schedules/{schedule}', [AdminController::class, 'updateSchedule'])->name('schedules.update');
+        Route::delete('/schedules/{schedule}', [AdminController::class, 'destroySchedule'])->name('schedules.destroy');
+        Route::patch('/schedules/{schedule}/toggle', [AdminController::class, 'toggleSchedule'])->name('schedules.toggle');
     });
 });
 

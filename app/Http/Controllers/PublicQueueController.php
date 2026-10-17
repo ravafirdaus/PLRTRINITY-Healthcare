@@ -39,12 +39,15 @@ class PublicQueueController extends Controller
             ->orderByDesc('called_at')
             ->get()
             ->map(function ($entry) {
+                $counterName = $entry->current_counter ?: ('Ruang '.$entry->service->name);
+
                 return [
                     'id' => $entry->id,
                     'queue_code' => $entry->queue_code,
                     'patient_name' => $entry->patient?->name ?? 'Pasien',
                     'service_name' => $entry->service->name,
-                    'counter' => $entry->current_counter ?? ('Ruang '.$entry->service->name),
+                    'counter' => $counterName,
+                    'counter_name' => $counterName,
                     'status' => $entry->status,
                     'status_label' => $entry->status_label,
                     'priority_level' => $entry->priority_level,

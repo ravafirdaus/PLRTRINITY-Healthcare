@@ -49,8 +49,32 @@
                 </a>
             </div>
 
-            <!-- Right: Date, Live Clock & Desktop Back to Home Button -->
-            <div class="flex items-center gap-5 w-full md:w-auto justify-between md:justify-end">
+            <!-- Right: Audio Controls, Date, Live Clock & Back to Home Button -->
+            <div class="flex flex-wrap items-center gap-3 sm:gap-4 w-full md:w-auto justify-between md:justify-end">
+                <!-- Audio Enable/Mute Button -->
+                <div class="flex items-center gap-2">
+                    <button type="button" @click="toggleAudio()"
+                            class="inline-flex items-center gap-2 h-10 px-3.5 rounded-hospital text-xs font-bold border transition-all active:scale-95 shadow-xs cursor-pointer select-none"
+                            :class="audioEnabled ? 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100' : 'bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100 animate-pulse'">
+                        <span class="w-2.5 h-2.5 rounded-full" :class="audioEnabled ? 'bg-emerald-500 animate-ping' : 'bg-amber-500'"></span>
+                        <span x-text="audioEnabled ? 'Suara Panggilan Aktif' : 'Aktifkan Suara Panggilan'"></span>
+                        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-show="audioEnabled">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                        </svg>
+                        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-show="!audioEnabled">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z m12-6l6 6m0-6l-6 6"/>
+                        </svg>
+                    </button>
+
+                    <button type="button" @click="testAudio()" x-show="audioEnabled"
+                            class="inline-flex items-center gap-1.5 h-10 px-3 rounded-hospital bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold border border-line shadow-xs transition-colors cursor-pointer"
+                            title="Uji coba nada bel lonceng dan ucapan suara antrean">
+                        <span>🔔 Uji Suara</span>
+                    </button>
+                </div>
+
+                <div class="h-9 w-px bg-line hidden sm:block"></div>
+
                 <!-- Date & Digital Clock -->
                 <div class="text-left md:text-right">
                     <div class="text-xs font-semibold text-ink-muted">{{ $todayFormatted }}</div>
@@ -74,6 +98,20 @@
         </div>
     </header>
 
+    <!-- Audio Activation Notice Banner (Muncul bila audio belum diizinkan browser) -->
+    <div x-show="!audioEnabled" x-cloak class="max-w-[1600px] mx-auto px-4 sm:px-8 pt-3 w-full">
+        <div class="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-3 rounded-hospital shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5 text-xs sm:text-sm font-semibold">
+                <span class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center shrink-0">🔔</span>
+                <span>Aktifkan audio untuk mendengar nada bel lonceng dan panggilan suara otomatis setiap ada pasien yang dipanggil.</span>
+            </div>
+            <button type="button" @click="enableAudio()"
+                    class="px-4 py-1.5 bg-white text-amber-900 font-bold text-xs rounded-hospital shadow-xs hover:bg-amber-50 active:scale-95 transition-all shrink-0 cursor-pointer">
+                🔊 Aktifkan Suara Sekarang
+            </button>
+        </div>
+    </div>
+
     <!-- MAIN DISPLAY AREA (3-COLUMN HOSPITAL MONITOR LAYOUT) -->
     <main class="flex-1 px-4 sm:px-8 py-6 max-w-[1600px] mx-auto w-full flex flex-col justify-center">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
@@ -95,10 +133,14 @@
                                 <p class="text-[11px] text-ink-muted">Panggilan Aktif Ruang Pemeriksaan</p>
                             </div>
                         </div>
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-hospital bg-surface-subtle text-ink-muted border border-line text-xs font-medium">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                            Audio Aktif
-                        </span>
+
+                        <!-- Audio Status Pill -->
+                        <button type="button" @click="toggleAudio()"
+                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-hospital border text-xs font-semibold transition cursor-pointer"
+                                :class="audioEnabled ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-amber-50 text-amber-800 border-amber-200'">
+                            <span class="w-2 h-2 rounded-full" :class="audioEnabled ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'"></span>
+                            <span x-text="audioEnabled ? 'Suara Aktif' : 'Suara Nonaktif'"></span>
+                        </button>
                     </div>
 
                     <!-- Center Body: Hospital Queue Call -->
@@ -113,21 +155,30 @@
                                 </div>
 
                                 <!-- Giant Queue Code -->
-                                <div class="text-6xl sm:text-7xl lg:text-8xl font-extrabold font-mono tracking-tight text-primary"
+                                <div class="text-6xl sm:text-7xl lg:text-8xl font-extrabold font-mono tracking-tight text-primary select-all"
                                      x-text="activeCalls[0].queue_code">
                                     GIG-001
                                 </div>
 
                                 <!-- Room / Counter Name -->
                                 <div class="text-2xl sm:text-3xl font-bold text-ink mt-4 truncate px-2"
-                                     x-text="activeCalls[0].counter_name || activeCalls[0].service_name">
+                                     x-text="activeCalls[0].counter_name || activeCalls[0].counter || activeCalls[0].service_name">
                                     Poli Gigi &amp; Mulut
                                 </div>
 
-                                <!-- Action Instruction -->
-                                <div class="inline-flex items-center gap-2 mt-3 px-4 py-1.5 rounded-hospital bg-mint border border-primary/20 text-xs sm:text-sm font-semibold text-primary-dark">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                                    <span>Silakan Masuk ke Ruang Pemeriksaan</span>
+                                <!-- Action Instruction & Replay Audio Button -->
+                                <div class="flex flex-wrap items-center justify-center gap-2 mt-4">
+                                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-hospital bg-mint border border-primary/20 text-xs sm:text-sm font-semibold text-primary-dark shadow-2xs">
+                                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                        <span>Silakan Masuk ke Ruang Pemeriksaan</span>
+                                    </div>
+
+                                    <button type="button" @click="replayCurrentCall()"
+                                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-hospital bg-white hover:bg-slate-50 text-primary border border-primary/30 text-xs font-bold shadow-2xs hover:shadow-xs active:scale-95 transition-all cursor-pointer"
+                                            title="Panggil ulang nomor antrean ini dengan nada bel dan suara">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+                                        <span>Panggil Ulang</span>
+                                    </button>
                                 </div>
                             </div>
                         </template>
@@ -311,14 +362,30 @@
                 currentTime: '10:28 WIB',
                 activeCalls: [],
                 waitingQueues: [],
+                audioEnabled: false,
+                isSpeaking: false,
+                lastAnnouncedKey: null,
+                audioCtx: null,
 
                 initMonitor() {
                     this.updateClock();
                     setInterval(() => this.updateClock(), 1000);
 
-                    // Fetch live status immediately and every 5 seconds
+                    // Check if audio was previously enabled
+                    if (localStorage.getItem('puskesmasflow_queue_audio') === '1') {
+                        this.audioEnabled = true;
+                    }
+
+                    // Fetch status immediately and poll every 4 seconds
                     this.fetchData();
-                    setInterval(() => this.fetchData(), 5000);
+                    setInterval(() => this.fetchData(), 4000);
+
+                    // Warm up speech voices if supported
+                    if ('speechSynthesis' in window) {
+                        window.speechSynthesis.onvoiceschanged = () => {
+                            window.speechSynthesis.getVoices();
+                        };
+                    }
                 },
 
                 updateClock() {
@@ -333,9 +400,187 @@
                             const data = await res.json();
                             this.activeCalls = data.active_calls || [];
                             this.waitingQueues = data.waiting_queues || [];
+
+                            // Check for newly called queue to announce
+                            if (this.activeCalls.length > 0) {
+                                const topCall = this.activeCalls[0];
+                                const callKey = `${topCall.id}_${topCall.queue_code}_${topCall.called_at || ''}`;
+
+                                if (this.lastAnnouncedKey === null) {
+                                    // Initial load, memorize current top call without blast
+                                    this.lastAnnouncedKey = callKey;
+                                } else if (this.lastAnnouncedKey !== callKey && topCall.status === 'called') {
+                                    this.lastAnnouncedKey = callKey;
+                                    if (this.audioEnabled) {
+                                        this.announceCall(topCall);
+                                    }
+                                }
+                            }
                         }
                     } catch (e) {
                         console.error('Queue poll error:', e);
+                    }
+                },
+
+                initAudioContext() {
+                    try {
+                        if (!this.audioCtx) {
+                            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                            if (AudioContextClass) {
+                                this.audioCtx = new AudioContextClass();
+                            }
+                        }
+                        if (this.audioCtx && this.audioCtx.state === 'suspended') {
+                            this.audioCtx.resume();
+                        }
+                    } catch (err) {
+                        console.warn('AudioContext not available:', err);
+                    }
+                },
+
+                enableAudio() {
+                    this.initAudioContext();
+                    this.audioEnabled = true;
+                    localStorage.setItem('puskesmasflow_queue_audio', '1');
+                    this.playChime().then(() => {
+                        this.speakText('Audio pemanggilan antrean aktif.');
+                    });
+                },
+
+                toggleAudio() {
+                    if (!this.audioEnabled) {
+                        this.enableAudio();
+                    } else {
+                        this.audioEnabled = false;
+                        localStorage.setItem('puskesmasflow_queue_audio', '0');
+                        if ('speechSynthesis' in window) {
+                            window.speechSynthesis.cancel();
+                        }
+                    }
+                },
+
+                testAudio() {
+                    this.initAudioContext();
+                    this.audioEnabled = true;
+                    const testCode = this.activeCalls.length > 0 ? this.activeCalls[0].queue_code : 'UMU-001';
+                    const testDest = this.activeCalls.length > 0 ? (this.activeCalls[0].counter_name || this.activeCalls[0].counter || this.activeCalls[0].service_name) : 'Poli Umum';
+
+                    this.playChime().then(() => {
+                        this.speakCall(testCode, testDest);
+                    });
+                },
+
+                replayCurrentCall() {
+                    if (this.activeCalls.length > 0) {
+                        this.initAudioContext();
+                        this.audioEnabled = true;
+                        this.announceCall(this.activeCalls[0]);
+                    } else {
+                        this.testAudio();
+                    }
+                },
+
+                playChime() {
+                    return new Promise((resolve) => {
+                        try {
+                            this.initAudioContext();
+                            if (!this.audioCtx) {
+                                resolve();
+                                return;
+                            }
+
+                            const now = this.audioCtx.currentTime;
+
+                            // Melodic 3-tone chime: D5 (587.33Hz) -> F#5 (739.99Hz) -> A5 (880Hz)
+                            const notes = [
+                                { freq: 587.33, start: now + 0.05, duration: 0.30 },
+                                { freq: 739.99, start: now + 0.35, duration: 0.30 },
+                                { freq: 880.00, start: now + 0.65, duration: 0.60 }
+                            ];
+
+                            notes.forEach((note) => {
+                                const osc = this.audioCtx.createOscillator();
+                                const gain = this.audioCtx.createGain();
+
+                                osc.type = 'sine';
+                                osc.frequency.setValueAtTime(note.freq, note.start);
+
+                                gain.gain.setValueAtTime(0.001, note.start);
+                                gain.gain.linearRampToValueAtTime(0.25, note.start + 0.04);
+                                gain.gain.exponentialRampToValueAtTime(0.0001, note.start + note.duration);
+
+                                osc.connect(gain);
+                                gain.connect(this.audioCtx.destination);
+
+                                osc.start(note.start);
+                                osc.stop(note.start + note.duration);
+                            });
+
+                            setTimeout(resolve, 1300);
+                        } catch (e) {
+                            console.error('Chime audio error:', e);
+                            resolve();
+                        }
+                    });
+                },
+
+                formatQueueForSpeech(code) {
+                    if (!code) return '';
+                    const parts = code.split('-');
+                    if (parts.length === 2) {
+                        const letters = parts[0].split('').join(' '); // e.g. 'U M U'
+                        const num = parseInt(parts[1], 10);
+                        return `${letters}, nomor ${isNaN(num) ? parts[1] : num}`;
+                    }
+                    return code.split('').join(' ');
+                },
+
+                announceCall(call) {
+                    this.playChime().then(() => {
+                        const queueCode = call.queue_code;
+                        const destination = call.counter_name || call.counter || call.service_name || 'Ruang Pemeriksaan';
+                        this.speakCall(queueCode, destination);
+                    });
+                },
+
+                speakCall(queueCode, destination) {
+                    const formattedCode = this.formatQueueForSpeech(queueCode);
+                    const sentence = `Nomor antrean, ${formattedCode}, silakan menuju ${destination}.`;
+                    this.speakText(sentence);
+                },
+
+                speakText(text) {
+                    if (!('speechSynthesis' in window)) {
+                        console.warn('SpeechSynthesis is not supported in this browser.');
+                        return;
+                    }
+
+                    try {
+                        window.speechSynthesis.cancel();
+
+                        const utterance = new SpeechSynthesisUtterance(text);
+                        utterance.lang = 'id-ID';
+                        utterance.rate = 0.88;
+                        utterance.pitch = 1.0;
+
+                        const voices = window.speechSynthesis.getVoices();
+                        const idVoice = voices.find(v => {
+                            const l = (v.lang || '').toLowerCase();
+                            const n = (v.name || '').toLowerCase();
+                            return l.includes('id') || n.includes('indonesia');
+                        });
+
+                        if (idVoice) {
+                            utterance.voice = idVoice;
+                        }
+
+                        utterance.onstart = () => { this.isSpeaking = true; };
+                        utterance.onend = () => { this.isSpeaking = false; };
+                        utterance.onerror = () => { this.isSpeaking = false; };
+
+                        window.speechSynthesis.speak(utterance);
+                    } catch (err) {
+                        console.error('Speech synthesis error:', err);
                     }
                 }
             };

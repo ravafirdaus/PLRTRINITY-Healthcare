@@ -43,6 +43,8 @@
             appointmentDate: '{{ old('appointment_date', '') }}',
             consultationType: '{{ old('consultation_type', 'in_person') }}',
             slots: [],
+            doctors: [],
+            selectedDoctorId: '{{ old('doctor_id', '') }}',
             loadingSlots: false,
             selectedSlot: '{{ old('slot_time', '') }}',
             get selectedService() {
@@ -60,6 +62,7 @@
             async fetchSlots() {
                 if (!this.serviceId || !this.appointmentDate) {
                     this.slots = [];
+                    this.doctors = [];
                     return;
                 }
                 this.loadingSlots = true;
@@ -68,8 +71,18 @@
                     const res = await fetch(`{{ route('patient.reservasi.slots') }}?service_id=${this.serviceId}&date=${this.appointmentDate}`);
                     const data = await res.json();
                     this.slots = data.slots || [];
+                    this.doctors = data.doctors || [];
+                    if (this.doctors.length > 0) {
+                        const exists = this.doctors.some(d => d.doctor_id == this.selectedDoctorId);
+                        if (!exists) {
+                            this.selectedDoctorId = this.doctors[0].doctor_id;
+                        }
+                    } else {
+                        this.selectedDoctorId = '';
+                    }
                 } catch (e) {
                     this.slots = [];
+                    this.doctors = [];
                 }
                 this.loadingSlots = false;
             }
@@ -101,6 +114,71 @@
                         min="{{ date('Y-m-d') }}"
                         class="w-full rounded-hospital border-line text-sm focus:border-primary focus:ring-1 focus:ring-primary @error('appointment_date') border-red-500 @enderror" required>
                     @error('appointment_date')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Tampilan Dokter yang Tersedia & Jadwal Praktik -->
+                <div x-show="serviceId && appointmentDate" class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <label class="block text-xs font-bold text-slate-700 uppercase">
+                            Dokter yang Tersedia &amp; Jadwal Praktik
+                        </label>
+                        <template x-if="doctors.length > 0">
+                            <span class="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span x-text="doctors.length + ' Dokter Bertugas'"></span>
+                            </span>
+                        </template>
+                    </div>
+
+                    <template x-if="loadingSlots">
+                        <div class="p-3.5 rounded-hospital bg-surface border border-line flex items-center gap-2.5 text-xs text-slate-500">
+                            <span class="inline-block animate-spin w-4 h-4 border-2 border-primary border-t-transparent rounded-full"></span>
+                            <span>Memeriksa ketersediaan jadwal dokter praktik...</span>
+                        </div>
+                    </template>
+
+                    <template x-if="!loadingSlots && doctors.length > 0">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <template x-for="doc in doctors" :key="doc.doctor_id">
+                                <label class="relative cursor-pointer group block">
+                                    <input type="radio" name="doctor_id" :value="doc.doctor_id" x-model="selectedDoctorId" class="sr-only peer">
+                                    <div class="p-3 rounded-hospital border border-line transition-all flex items-start gap-3 bg-white peer-checked:border-primary peer-checked:bg-primary-50/40 peer-checked:ring-1 peer-checked:ring-primary hover:border-primary/40 shadow-2xs">
+                                        <!-- Doctor Avatar Icon -->
+                                        <div class="w-9 h-9 rounded-full bg-primary-50 text-primary flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-primary/20 peer-checked:bg-primary peer-checked:text-white transition-colors">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex items-center justify-between gap-1">
+                                                <span class="font-bold text-xs text-ink truncate block" x-text="doc.doctor_name"></span>
+                                                <span class="text-[9px] font-bold text-emerald-700 bg-emerald-100/80 px-1.5 py-0.2 rounded shrink-0">Praktik</span>
+                                            </div>
+                                            <p class="text-[11px] text-slate-600 mt-0.5 flex items-center gap-1">
+                                                <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                                <span x-text="doc.formatted_schedule"></span>
+                                            </p>
+                                            <p class="text-[10px] text-primary font-medium mt-0.5" x-text="'Poli: ' + doc.service_name"></p>
+                                        </div>
+                                    </div>
+                                </label>
+                            </template>
+                        </div>
+                    </template>
+
+                    <template x-if="!loadingSlots && doctors.length === 0">
+                        <div class="p-3.5 rounded-hospital bg-amber-50/80 border border-amber-200/80 text-amber-800 text-xs flex items-start gap-2.5">
+                            <svg class="w-4 h-4 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <div>
+                                <span class="font-bold block">Tidak ada jadwal dokter spesifik pada hari ini</span>
+                                <span class="text-[11px] text-amber-700 mt-0.5 block leading-relaxed">
+                                    Dokter pemeriksa akan ditentukan langsung oleh petugas saat check-in loket, atau Anda dapat memilih tanggal lain sesuai jadwal dokter faskes.
+                                </span>
+                            </div>
+                        </div>
+                    </template>
+
+                    @error('doctor_id')
                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                     @enderror
                 </div>

@@ -67,10 +67,13 @@
                     <p class="text-slate-400">Slot Waktu</p>
                     <p class="font-bold text-primary mt-0.5 font-mono text-sm">{{ \Carbon\Carbon::parse($appointment->slot_time)->format('H:i') }} WIB</p>
                 </div>
-                @if($appointment->teleconsultation && $appointment->teleconsultation->doctor)
+                @php
+                    $assignedDoctor = $appointment->doctor ?? $appointment->teleconsultation?->doctor;
+                @endphp
+                @if($assignedDoctor)
                 <div>
                     <p class="text-slate-400">Dokter Penanggung Jawab</p>
-                    <p class="font-bold text-ink mt-0.5">{{ $appointment->teleconsultation->doctor->name }}</p>
+                    <p class="font-bold text-ink mt-0.5">{{ $assignedDoctor->name }}</p>
                 </div>
                 @endif
             </div>

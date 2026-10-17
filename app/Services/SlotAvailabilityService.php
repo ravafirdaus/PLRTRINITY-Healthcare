@@ -67,6 +67,41 @@ class SlotAvailabilityService
     }
 
     /**
+     * Get available doctors scheduled for a given service and date.
+     *
+     * @return array<int, array{id: int, doctor_id: int, doctor_name: string, doctor_phone: ?string, service_id: int, service_name: string, day_of_week: int, day_name: string, start_time: string, end_time: string, formatted_schedule: string}>
+     */
+    public function getAvailableDoctors(int $serviceId, string $dateString): array
+    {
+        $date = Carbon::parse($dateString);
+        $dayOfWeek = (int) $date->dayOfWeekIso; // 1 = Senin, ..., 7 = Minggu
+
+        return StaffSchedule::where('service_id', $serviceId)
+            ->where('day_of_week', $dayOfWeek)
+            ->where('is_active', true)
+            ->with(['user' => fn ($q) => $q->select('id', 'name', 'email', 'phone', 'role'), 'service:id,name,code'])
+            ->get()
+            ->filter(fn (StaffSchedule $schedule) => $schedule->user && $schedule->user->isDoctor())
+            ->map(function (StaffSchedule $schedule) {
+                return [
+                    'id' => $schedule->id,
+                    'doctor_id' => $schedule->user_id,
+                    'doctor_name' => $schedule->user->name,
+                    'doctor_phone' => $schedule->user->phone,
+                    'service_id' => $schedule->service_id,
+                    'service_name' => $schedule->service->name,
+                    'day_of_week' => $schedule->day_of_week,
+                    'day_name' => $schedule->day_name,
+                    'start_time' => substr($schedule->start_time, 0, 5),
+                    'end_time' => substr($schedule->end_time, 0, 5),
+                    'formatted_schedule' => substr($schedule->start_time, 0, 5).' - '.substr($schedule->end_time, 0, 5).' WIB',
+                ];
+            })
+            ->values()
+            ->toArray();
+    }
+
+    /**
      * Book an appointment with pessimistic locking to prevent race conditions and overbooking.
      */
     public function bookAppointment(array $data): Appointment
@@ -106,6 +141,15 @@ class SlotAvailabilityService
                 throw new InvalidArgumentException("Layanan {$service->name} belum mendukung layanan telekonsultasi video.");
             }
 
+            // Determine doctor from schedule if not explicitly provided
+            $dayOfWeek = (int) Carbon::parse($date)->dayOfWeekIso;
+            $schedule = StaffSchedule::where('service_id', $service->id)
+                ->where('day_of_week', $dayOfWeek)
+                ->where('is_active', true)
+                ->first();
+
+            $doctorId = ! empty($data['doctor_id']) ? (int) $data['doctor_id'] : $schedule?->user_id;
+
             // 3. Generate unique appointment number: RES-YYYYMMDD-XXXX
             $datePrefix = 'RES-'.Carbon::parse($date)->format('Ymd').'-';
             $lastAppt = Appointment::where('appointment_number', 'LIKE', $datePrefix.'%')
@@ -124,6 +168,7 @@ class SlotAvailabilityService
             $appointment = Appointment::create([
                 'appointment_number' => $appointmentNumber,
                 'patient_id' => $patient->id,
+                'doctor_id' => $doctorId,
                 'service_id' => $service->id,
                 'appointment_date' => $date,
                 'slot_time' => $slotTime,
@@ -133,18 +178,12 @@ class SlotAvailabilityService
             ]);
 
             if ($consultationType === 'video') {
-                $dayOfWeek = (int) Carbon::parse($date)->dayOfWeekIso;
-                $schedule = StaffSchedule::where('service_id', $service->id)
-                    ->where('day_of_week', $dayOfWeek)
-                    ->where('is_active', true)
-                    ->first();
-
                 $scheduledDateTime = Carbon::parse($date.' '.$slotTime);
 
                 $appointment->teleconsultation()->create([
                     'patient_id' => $patient->id,
                     'service_id' => $service->id,
-                    'doctor_id' => $schedule?->user_id,
+                    'doctor_id' => $doctorId,
                     'session_id' => Teleconsultation::generateSessionId(),
                     'room_name' => Teleconsultation::generateSecureRoomName(),
                     'status' => 'scheduled',

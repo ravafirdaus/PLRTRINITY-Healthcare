@@ -39,11 +39,19 @@ class PatientReservationController extends Controller
         ]);
 
         $slots = $this->slotService->getAvailableSlots(
-            $request->service_id,
+            (int) $request->service_id,
             $request->date
         );
 
-        return response()->json(['slots' => $slots]);
+        $doctors = $this->slotService->getAvailableDoctors(
+            (int) $request->service_id,
+            $request->date
+        );
+
+        return response()->json([
+            'slots' => $slots,
+            'doctors' => $doctors,
+        ]);
     }
 
     public function store(PatientReservationRequest $request): RedirectResponse
@@ -58,6 +66,7 @@ class PatientReservationController extends Controller
         try {
             $appointment = $this->slotService->bookAppointment([
                 'patient_id' => $patient->id,
+                'doctor_id' => ! empty($validated['doctor_id']) ? (int) $validated['doctor_id'] : null,
                 'service_id' => (int) $validated['service_id'],
                 'appointment_date' => $validated['appointment_date'],
                 'slot_time' => $validated['slot_time'],
@@ -88,7 +97,7 @@ class PatientReservationController extends Controller
             abort(403, 'Anda tidak memiliki akses ke reservasi ini.');
         }
 
-        $appointment->load(['service', 'patient', 'queueEntry', 'teleconsultation.doctor']);
+        $appointment->load(['service', 'patient', 'doctor', 'queueEntry', 'teleconsultation.doctor']);
 
         return view('patient.reservasi.show', compact('appointment', 'patient'));
     }

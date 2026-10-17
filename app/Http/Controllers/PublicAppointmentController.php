@@ -52,8 +52,14 @@ class PublicAppointmentController extends Controller
             $request->date
         );
 
+        $doctors = $this->slotService->getAvailableDoctors(
+            (int) $request->service_id,
+            $request->date
+        );
+
         return response()->json([
             'slots' => $slots,
+            'doctors' => $doctors,
         ]);
     }
 

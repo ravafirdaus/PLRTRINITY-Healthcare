@@ -15,6 +15,7 @@ class PatientReservationRequest extends FormRequest
     {
         return [
             'service_id' => ['required', 'exists:services,id'],
+            'doctor_id' => ['nullable', 'exists:users,id'],
             'appointment_date' => ['required', 'date', 'after_or_equal:today'],
             'slot_time' => ['required', 'regex:/^([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$/'],
             'consultation_type' => ['nullable', 'string', 'in:in_person,video'],

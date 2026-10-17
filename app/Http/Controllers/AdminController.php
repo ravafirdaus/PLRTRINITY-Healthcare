@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ClinicSetting;
 use App\Models\Service;
+use App\Models\StaffSchedule;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -28,11 +29,19 @@ class AdminController extends Controller
 
         $services = Service::all();
         $users = User::orderBy('name')->get();
+        $doctors = User::where('role', 'doctor')->orderBy('name')->get();
+        $schedules = StaffSchedule::with(['user', 'service'])
+            ->orderBy('service_id')
+            ->orderBy('day_of_week')
+            ->orderBy('start_time')
+            ->get();
 
         return view('admin.dashboard', [
             'settings' => $settings,
             'services' => $services,
             'users' => $users,
+            'doctors' => $doctors,
+            'schedules' => $schedules,
         ]);
     }
 
@@ -125,5 +134,102 @@ class AdminController extends Controller
         ]);
 
         return back()->with('success', "Akun pengguna {$validated['name']} ({$validated['role']}) berhasil dibuat.");
+    }
+
+    /**
+     * Store a new doctor practice schedule.
+     */
+    public function storeSchedule(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'service_id' => 'required|exists:services,id',
+            'day_of_week' => 'required|integer|between:1,7',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'is_active' => 'nullable|boolean',
+        ]);
+
+        $doctor = User::findOrFail($validated['user_id']);
+        if (! $doctor->isDoctor()) {
+            return back()->withErrors(['user_id' => 'Pengguna yang dipilih harus memiliki peran dokter.'])->withInput();
+        }
+
+        $exists = StaffSchedule::where('user_id', $validated['user_id'])
+            ->where('service_id', $validated['service_id'])
+            ->where('day_of_week', $validated['day_of_week'])
+            ->where('start_time', $validated['start_time'])
+            ->exists();
+
+        if ($exists) {
+            return back()->withErrors(['user_id' => 'Jadwal untuk dokter, poli, dan hari tersebut sudah terdaftar.'])->withInput();
+        }
+
+        StaffSchedule::create([
+            'user_id' => $validated['user_id'],
+            'service_id' => $validated['service_id'],
+            'day_of_week' => $validated['day_of_week'],
+            'start_time' => $validated['start_time'],
+            'end_time' => $validated['end_time'],
+            'is_active' => $request->has('is_active'),
+        ]);
+
+        return back()->with('success', "Jadwal praktik {$doctor->name} berhasil ditambahkan.")->with('active_tab', 'schedules');
+    }
+
+    /**
+     * Update an existing doctor schedule.
+     */
+    public function updateSchedule(Request $request, StaffSchedule $schedule): RedirectResponse
+    {
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'service_id' => 'required|exists:services,id',
+            'day_of_week' => 'required|integer|between:1,7',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'is_active' => 'nullable|boolean',
+        ]);
+
+        $doctor = User::findOrFail($validated['user_id']);
+        if (! $doctor->isDoctor()) {
+            return back()->withErrors(['user_id' => 'Pengguna yang dipilih harus memiliki peran dokter.'])->withInput();
+        }
+
+        $schedule->update([
+            'user_id' => $validated['user_id'],
+            'service_id' => $validated['service_id'],
+            'day_of_week' => $validated['day_of_week'],
+            'start_time' => $validated['start_time'],
+            'end_time' => $validated['end_time'],
+            'is_active' => $request->has('is_active'),
+        ]);
+
+        return back()->with('success', 'Jadwal dokter berhasil diperbarui.')->with('active_tab', 'schedules');
+    }
+
+    /**
+     * Delete a doctor practice schedule.
+     */
+    public function destroySchedule(StaffSchedule $schedule): RedirectResponse
+    {
+        $doctorName = $schedule->user?->name ?? 'Dokter';
+        $schedule->delete();
+
+        return back()->with('success', "Jadwal dokter {$doctorName} berhasil dihapus.")->with('active_tab', 'schedules');
+    }
+
+    /**
+     * Toggle active status of a schedule.
+     */
+    public function toggleSchedule(StaffSchedule $schedule): RedirectResponse
+    {
+        $schedule->update([
+            'is_active' => ! $schedule->is_active,
+        ]);
+
+        $status = $schedule->is_active ? 'diaktifkan' : 'dinonaktifkan';
+
+        return back()->with('success', "Status jadwal dokter berhasil {$status}.")->with('active_tab', 'schedules');
     }
 }

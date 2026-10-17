@@ -10,9 +10,9 @@
         <div class="absolute -top-16 -right-16 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-16 -left-16 w-56 h-56 bg-teal-400/10 rounded-full blur-2xl pointer-events-none"></div>
 
-        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-            <!-- Left: Greeting & Personal Info -->
-            <div class="flex-1 space-y-3.5 text-left w-full">
+        <div class="relative z-10">
+            <!-- Greeting & Personal Info -->
+            <div class="space-y-3.5 text-left">
                 <!-- Status Badges -->
                 <div class="flex flex-wrap items-center gap-2">
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white text-primary border border-primary/20 shadow-2xs">
@@ -30,7 +30,7 @@
                     <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
                         Halo, <span class="text-primary">{{ $patient->name }}</span>
                     </h1>
-                    <p class="text-xs sm:text-sm text-slate-600 font-normal mt-1.5 leading-relaxed max-w-xl">
+                    <p class="text-xs sm:text-sm text-slate-600 font-normal mt-1.5 leading-relaxed max-w-2xl">
                         Selamat datang di portal pelayanan pasien <strong class="text-primary font-semibold">PuskesmasFlow</strong>. Kelola tiket reservasi, akses kartu digital, dan pantau status antrean secara real-time.
                     </p>
                 </div>
@@ -53,18 +53,6 @@
                         <svg class="w-3.5 h-3.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                         <span>Telekonsultasi Video</span>
                     </a>
-                </div>
-            </div>
-
-            <!-- Right: Official Logo Showcase -->
-            <div class="relative shrink-0 flex items-center justify-center">
-                <div class="relative group">
-                    <!-- Soft radial glow behind logo -->
-                    <div class="absolute inset-0 bg-primary/20 rounded-full blur-2xl transform scale-110 pointer-events-none"></div>
-                    
-                    <img src="{{ asset('images/logo.png') }}" 
-                         alt="SIPUSKES Medical Center Logo" 
-                         class="relative w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 object-contain animate-float-3d drop-shadow-xl select-none transition-transform duration-500 group-hover:scale-105">
                 </div>
             </div>
         </div>
@@ -97,12 +85,12 @@
 
     <!-- Kartu Pasien Digital (Otomatis Terbuat dengan Desain Healthcare) -->
     <div class="space-y-3">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+        <div>
             <div class="flex items-center gap-2">
                 <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
                 <h2 class="text-sm sm:text-base font-bold text-ink">Kartu Pasien Digital Resmi (e-KIP)</h2>
             </div>
-            <span class="text-[11px] text-slate-500 font-medium">Tunjukkan kartu ini atau nomor peserta saat check-in loket</span>
+            <p class="text-xs text-slate-500 mt-1">Tunjukkan kartu ini atau nomor peserta saat check-in di loket</p>
         </div>
 
         <div>
