@@ -14,7 +14,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased text-ink bg-surface min-h-full flex" x-data="{ sidebarOpen: false, desktopSidebarCollapsed: false }">
+    <body class="font-sans antialiased text-ink bg-surface-subtle min-h-full flex selection:bg-primary selection:text-white" x-data="{ sidebarOpen: false, desktopSidebarCollapsed: false }">
         
         <!-- Mobile Sidebar Backdrop & Off-canvas -->
         <div x-show="sidebarOpen" class="fixed inset-0 z-50 lg:hidden" x-cloak>
@@ -34,7 +34,7 @@
         <div class="flex-1 flex flex-col min-w-0 min-h-screen">
             
             <!-- Top Header Bar -->
-            <header class="bg-white border-b border-line sticky top-0 z-20 px-3 sm:px-6 {{ ($compact ?? false) ? 'py-2 sm:py-2.5' : 'py-3 sm:py-3.5' }} shadow-2xs">
+            <header class="bg-white/95 backdrop-blur-md border-b border-line sticky top-0 z-20 px-3 sm:px-6 {{ ($compact ?? false) ? 'py-2 sm:py-2.5' : 'py-3 sm:py-3.5' }} shadow-2xs">
                 <div class="{{ ($fluid ?? false) ? 'w-full max-w-full' : 'max-w-7xl mx-auto' }} flex items-center justify-between gap-4">
                     
                     <!-- Left: Mobile Toggle, Desktop Collapse & Page Title / Breadcrumb -->

@@ -46,14 +46,24 @@
     }
 
     @keyframes preview-arrive {
-        from { opacity: 0; transform: translateY(16px) scale(0.985); }
-        to { opacity: 1; transform: translateY(0) scale(1); }
+        from {
+            opacity: 0;
+            transform: translateY(16px) scale(0.985);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
     }
 
     @keyframes float-3d {
-        0%, 100% {
+
+        0%,
+        100% {
             transform: translateY(0px) rotate(0deg);
         }
+
         50% {
             transform: translateY(-8px) rotate(0.8deg);
         }
@@ -94,12 +104,159 @@
         transform: scale(1.18) rotate(-6deg);
     }
 
+    /* Apple-Style Scroll Reveal System */
+    .apple-reveal {
+        opacity: 0;
+        transform: translateY(32px) scale(0.985);
+        filter: blur(8px);
+        transition:
+            opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+            transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+            filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform, filter;
+    }
+
+    .apple-reveal.is-revealed {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0px);
+    }
+
+    /* Apple Reveal Stagger Delays */
+    .delay-50 {
+        transition-delay: 50ms;
+    }
+
+    .delay-100 {
+        transition-delay: 100ms;
+    }
+
+    .delay-150 {
+        transition-delay: 150ms;
+    }
+
+    .delay-200 {
+        transition-delay: 200ms;
+    }
+
+    .delay-250 {
+        transition-delay: 250ms;
+    }
+
+    .delay-300 {
+        transition-delay: 300ms;
+    }
+
+    .delay-400 {
+        transition-delay: 400ms;
+    }
+
+    .delay-500 {
+        transition-delay: 500ms;
+    }
+
+    /* Apple-style Interactive Hover & Shimmer */
+    .apple-card {
+        transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+            box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+            border-color 0.3s ease;
+    }
+
+    .apple-card:hover {
+        transform: translateY(-6px) scale(1.006);
+        box-shadow: 0 20px 40px -15px rgba(8, 126, 139, 0.12), 0 0 0 1px rgba(8, 126, 139, 0.15);
+    }
+
+    /* Apple-style Ambient Floating Orbs */
+    @keyframes orb-float-1 {
+
+        0%,
+        100% {
+            transform: translate(0px, 0px) scale(1);
+        }
+
+        50% {
+            transform: translate(-25px, 20px) scale(1.08);
+        }
+    }
+
+    @keyframes orb-float-2 {
+
+        0%,
+        100% {
+            transform: translate(0px, 0px) scale(1);
+        }
+
+        50% {
+            transform: translate(25px, -15px) scale(1.06);
+        }
+    }
+
+    .animate-orb-1 {
+        animation: orb-float-1 9s ease-in-out infinite;
+    }
+
+    .animate-orb-2 {
+        animation: orb-float-2 11s ease-in-out infinite;
+    }
+
+    /* Glass Specular Reflection Effect */
+    .glass-specular {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.6) 100%);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 12px 36px -10px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    /* Dynamic Scroll Progress Bar */
+    #scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #087E8B 0%, #10B981 50%, #3B82F6 100%);
+        z-index: 9999;
+        transition: width 0.1s linear;
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+    }
+
     @media (prefers-reduced-motion: reduce) {
-        .queue-preview-card { animation: none; transition: none; }
-        .queue-preview-card:hover { transform: none; }
-        .animate-float-3d { animation: none; }
-        .btn-tap:active { transform: none !important; }
-        .sidebar-link:active { transform: none !important; }
+        .queue-preview-card {
+            animation: none;
+            transition: none;
+        }
+
+        .queue-preview-card:hover {
+            transform: none;
+        }
+
+        .animate-float-3d {
+            animation: none;
+        }
+
+        .btn-tap:active {
+            transform: none !important;
+        }
+
+        .sidebar-link:active {
+            transform: none !important;
+        }
+
+        .apple-reveal {
+            opacity: 1 !important;
+            transform: none !important;
+            filter: none !important;
+            transition: none !important;
+        }
+
+        .apple-card:hover {
+            transform: none !important;
+        }
+
+        .animate-orb-1,
+        .animate-orb-2 {
+            animation: none !important;
+        }
     }
 }
-

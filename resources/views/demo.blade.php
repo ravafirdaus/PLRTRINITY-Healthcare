@@ -14,11 +14,7 @@
     <header class="bg-white border-b border-line px-6 py-4 shadow-xs">
         <div class="max-w-6xl mx-auto flex items-center justify-between">
             <a href="{{ route('home') }}" class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-hospital bg-primary flex items-center justify-center text-white shadow-xs">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
-                    </svg>
-                </div>
+                <img src="{{ asset('images/logo.png') }}" alt="SIPUSKES Medical Center" class="w-9 h-9 object-contain drop-shadow-xs shrink-0">
                 <div>
                     <span class="text-lg font-bold text-ink">Puskesmas<span class="text-primary">Flow</span></span>
                     <span class="block text-[11px] text-ink-muted">Akses Khusus Evaluator &amp; Pengujian</span>

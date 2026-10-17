@@ -5,16 +5,12 @@
         <div class="p-4 border-b border-line flex items-center justify-between"
              :class="desktopSidebarCollapsed ? 'lg:p-3 lg:justify-center' : 'p-5'">
             <a href="{{ route('dashboard') }}" class="flex items-center gap-3 group" title="PuskesmasFlow">
-                <div class="w-9 h-9 rounded-hospital bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-xs group-hover:scale-105 transition-transform shrink-0">
-                    <svg class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M10 4a1 1 0 011-1h2a1 1 0 011 1v5h5a1 1 0 011 1v2a1 1 0 01-1 1h-5v5a1 1 0 01-1 1h-2a1 1 0 01-1-1v-5H5a1 1 0 01-1-1v-2a1 1 0 011-1h5V4z"/>
-                    </svg>
-                </div>
+                <img src="{{ asset('images/logo.png') }}" alt="SIPUSKES Medical Center" class="w-9 h-9 object-contain drop-shadow-xs group-hover:scale-105 transition-transform shrink-0">
                 <div :class="desktopSidebarCollapsed ? 'lg:hidden' : ''" class="transition-opacity duration-150">
-                    <span class="text-base font-bold text-ink tracking-tight block leading-tight">
-                        Puskesmas<span class="text-primary">Flow</span>
+                    <span class="text-base font-extrabold text-ink tracking-tight block leading-tight">
+                        Puskesmas<span class="text-primary font-black">Flow</span>
                     </span>
-                    <span class="text-[10px] font-semibold text-accent uppercase tracking-wider block">Sistem Informasi Faskes</span>
+                    <span class="text-[9px] font-bold text-primary uppercase tracking-wider block bg-primary-50 px-1.5 py-0.5 rounded border border-primary/20 w-fit mt-0.5">Portal Staf Medis</span>
                 </div>
             </a>
             @if(isset($isMobile) && $isMobile)

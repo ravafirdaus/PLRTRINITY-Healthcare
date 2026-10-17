@@ -5,22 +5,22 @@
 @section('content')
 <div class="space-y-6">
     <!-- 3D Welcome Hero Showcase -->
-    <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-white via-teal-50/50 to-emerald-50/60 border border-teal-100/90 shadow-lg shadow-teal-950/5 p-5 sm:p-7 md:p-8 transition-all hover:shadow-xl hover:shadow-teal-900/10">
+    <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-white via-primary-50/40 to-surface-subtle border border-primary/20 shadow-xs p-5 sm:p-7 md:p-8 transition-all hover:shadow-sm">
         <!-- Ambient decorative glow spheres behind -->
-        <div class="absolute -top-16 -right-16 w-64 h-64 bg-teal-400/15 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-16 -left-16 w-56 h-56 bg-emerald-400/15 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute -top-16 -right-16 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-16 -left-16 w-56 h-56 bg-teal-400/10 rounded-full blur-2xl pointer-events-none"></div>
 
         <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
             <!-- Left: Greeting & Personal Info -->
             <div class="flex-1 space-y-3.5 text-left w-full">
                 <!-- Status Badges -->
                 <div class="flex flex-wrap items-center gap-2">
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white text-teal-800 border border-teal-200/90 shadow-xs">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white text-primary border border-primary/20 shadow-2xs">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         Portal Resmi Pasien FKTP
                     </span>
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-teal-600/10 text-teal-900 border border-teal-600/20 font-mono">
-                        <svg class="w-3 h-3 text-teal-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-primary-50 text-primary border border-primary/20 font-mono">
+                        <svg class="w-3 h-3 text-primary shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                         NIK: {{ $patient->masked_nik }}
                     </span>
                 </div>
@@ -28,43 +28,43 @@
                 <!-- Main Greeting -->
                 <div>
                     <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
-                        Halo, <span class="bg-gradient-to-r from-teal-700 via-teal-800 to-emerald-700 bg-clip-text text-transparent">{{ $patient->name }}</span>
+                        Halo, <span class="text-primary">{{ $patient->name }}</span>
                     </h1>
                     <p class="text-xs sm:text-sm text-slate-600 font-normal mt-1.5 leading-relaxed max-w-xl">
-                        Selamat datang di portal pelayanan pasien <strong class="text-teal-900 font-semibold">PuskesmasFlow</strong>. Kelola tiket reservasi, akses kartu digital, dan pantau status antrean secara real-time.
+                        Selamat datang di portal pelayanan pasien <strong class="text-primary font-semibold">PuskesmasFlow</strong>. Kelola tiket reservasi, akses kartu digital, dan pantau status antrean secara real-time.
                     </p>
                 </div>
 
                 <!-- Date & Quick Actions -->
                 <div class="pt-1 flex flex-wrap items-center gap-2.5">
-                    <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white/90 backdrop-blur-xs rounded-xl border border-slate-200/90 shadow-2xs text-xs font-semibold text-slate-700">
-                        <div class="w-5 h-5 rounded-md bg-teal-50 flex items-center justify-center text-teal-700 shrink-0">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white/90 backdrop-blur-xs rounded-xl border border-line shadow-2xs text-xs font-semibold text-slate-700">
+                        <div class="w-5 h-5 rounded-md bg-primary-50 flex items-center justify-center text-primary shrink-0">
                             <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                         </div>
                         <span class="text-xs">{{ $todayFormatted ?? \Carbon\Carbon::today()->translatedFormat('l, d F Y') }}</span>
                     </div>
 
-                    <a href="{{ route('patient.reservasi.create') }}" class="btn-tap inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white rounded-xl text-xs font-bold shadow-md shadow-teal-600/20 hover:shadow-lg hover:shadow-teal-600/30 transition-all active:scale-95">
+                    <a href="{{ route('patient.reservasi.create') }}" class="btn-tap inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-primary hover:bg-primary-hover text-white rounded-xl text-xs font-bold shadow-xs hover:shadow transition-all active:scale-95">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
                         <span>Ambil Antrean</span>
                     </a>
 
-                    <a href="{{ route('patient.telekonsultasi.index') }}" class="btn-tap inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white hover:bg-slate-50 text-teal-800 border border-teal-200/90 rounded-xl text-xs font-bold shadow-2xs hover:shadow-xs transition-all active:scale-95">
-                        <svg class="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    <a href="{{ route('patient.telekonsultasi.index') }}" class="btn-tap inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-line rounded-xl text-xs font-bold shadow-2xs hover:shadow-xs transition-all active:scale-95">
+                        <svg class="w-3.5 h-3.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                         <span>Telekonsultasi Video</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Right: 3D Floating Health Shield Asset -->
+            <!-- Right: Official Logo Showcase -->
             <div class="relative shrink-0 flex items-center justify-center">
                 <div class="relative group">
-                    <!-- Soft radial glow behind 3D object -->
-                    <div class="absolute inset-0 bg-gradient-to-tr from-teal-400/20 to-emerald-400/20 rounded-full blur-2xl transform scale-110 pointer-events-none"></div>
+                    <!-- Soft radial glow behind logo -->
+                    <div class="absolute inset-0 bg-primary/20 rounded-full blur-2xl transform scale-110 pointer-events-none"></div>
                     
-                    <img src="{{ asset('images/medical-3d-hero.png') }}" 
-                         alt="PuskesmasFlow 3D Protection" 
-                         class="relative w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 object-contain animate-float-3d drop-shadow-xl select-none pointer-events-none transition-transform duration-500 group-hover:scale-105">
+                    <img src="{{ asset('images/logo.png') }}" 
+                         alt="SIPUSKES Medical Center Logo" 
+                         class="relative w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 object-contain animate-float-3d drop-shadow-xl select-none transition-transform duration-500 group-hover:scale-105">
                 </div>
             </div>
         </div>

@@ -24,12 +24,7 @@
             <!-- Left: Hospital / Puskesmas Brand -->
             <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
                 <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-hospital bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-xs shrink-0">
-                        <!-- Bakti Husada / Medical Cross -->
-                        <svg class="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M10 4a1 1 0 011-1h2a1 1 0 011 1v5h5a1 1 0 011 1v2a1 1 0 01-1 1h-5v5a1 1 0 01-1 1h-2a1 1 0 01-1-1v-5H5a1 1 0 01-1-1v-2a1 1 0 011-1h5V4z"/>
-                        </svg>
-                    </div>
+                    <img src="{{ asset('images/logo.png') }}" alt="SIPUSKES Medical Center" class="w-11 h-11 object-contain drop-shadow-xs shrink-0">
                     <div>
                         <div class="flex items-center gap-2">
                             <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-ink leading-tight">

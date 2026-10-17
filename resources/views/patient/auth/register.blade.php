@@ -44,11 +44,7 @@
             <!-- Header Brand -->
             <div class="text-center mb-8">
                 <div class="inline-flex items-center justify-center gap-2.5 mb-3">
-                    <div class="w-10 h-10 rounded-hospital bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-xs">
-                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M10 4a1 1 0 011-1h2a1 1 0 011 1v5h5a1 1 0 011 1v2a1 1 0 01-1 1h-5v5a1 1 0 01-1 1h-2a1 1 0 01-1-1v-5H5a1 1 0 01-1-1v-2a1 1 0 011-1h5V4z"/>
-                        </svg>
-                    </div>
+                    <img src="{{ asset('images/logo.png') }}" alt="SIPUSKES Medical Center" class="w-10 h-10 object-contain drop-shadow-xs shrink-0">
                     <div class="text-left">
                         <span class="text-xl font-bold tracking-tight text-ink">Puskesmas<span class="text-primary">Flow</span></span>
                         <span class="block text-[10px] font-semibold text-accent uppercase tracking-wider">Registrasi &amp; e-KIP Digital Pasien</span>
